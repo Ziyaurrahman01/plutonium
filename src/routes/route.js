@@ -31,18 +31,19 @@ router.get('/give-me-students-data',function(req, res){
 })
 router.get('/movies', function (req, res) {
     const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
-    console.log(movies);
     res.send(movies);
 });
+
 router.get("/movies/:indexNumber", function (req, res) {
     const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
     console.log(req.params.indexNumber)
     let movieIndex = req.params.indexNumber
     let ourmovie = movies[movieIndex]
-    console.log(ourmovie)
     res.send(ourmovie)
 });
-router.get("/movies/:indexNumber", function (req, res) {
+
+
+router.get("/moviesv/:indexNumber", function (req, res) {
     const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
     console.log(req.params.indexNumber)
     let movieIndex = req.params.indexNumber
@@ -52,5 +53,104 @@ router.get("/movies/:indexNumber", function (req, res) {
     }
     let ourmovie = movies[movieIndex]
     res.send(ourmovie)
+});
+
+router.get("/films", function(req, res){
+   const films =  [ {
+        "id": 1,
+        "name": "The Shining"
+       }, {
+        "id": 2,
+        "name": "Incendies"
+       }, {
+        "id": 3,
+        "name": "Rang de Basanti"
+       }, {
+        "id": 4,
+        "name": "Finding Nemo"
+       }]
+       res.send(films)
+       
+})
+router.get("/films/:filmId", function(req, res){
+   const films = [ {
+        "id": 1,
+        "name": "The Shining"
+       }, {
+        "id": 2,
+        "name": "Incendies"
+       }, {
+        "id": 3,
+        "name": "Rang de Basanti"
+       }, {
+        "id": 4,
+        "name": "Finding Nemo"
+       }]
+      
+       let filmId = req.params.filmId
+       for(let i = 0; i< films.length; i++){
+        let film = films[i]
+        if(film.id == filmId){
+            return res.send(film)
+        }
+       }
+       res.send("invaild film id")
+})
+let players =
+    [
+        {
+            "name": "manish",
+            "dob": "1/1/1995",
+            "gender": "male",
+            "city": "jalandhar",
+            "sports": [
+                "swimming"
+            ]
+        },
+        {
+            "name": "gopal",
+            "dob": "1/09/1995",
+            "gender": "male",
+            "city": "delhi",
+            "sports": [
+                "soccer"
+            ]
+        },
+        {
+            "name": "lokesh",
+            "dob": "1/1/1990",
+            "gender": "male",
+            "city": "mumbai",
+            "sports": [
+                "soccer"
+            ]
+        },
+    ]
+
+    router.post('/players', function (req, res) {
+    
+        let newPlayer = req.body
+        let newPlayersName = newPlayer.name
+        let isNameRepeated = false
+    
+        
+    
+        for(let i = 0; i < players.length; i++) {
+            if(players[i].name == newPlayersName) {
+                isNameRepeated = true;
+                break;
+            }
+        }
+    
+        if (isNameRepeated) {
+            //Player exists
+            res.send("This player was already added!")
+        } else {
+            //New entry
+            players.push(newPlayer)
+            res.send(players)
+        }
+    });
+    
 module.exports = router;
 // adding this comment for no reason
