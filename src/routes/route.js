@@ -151,6 +151,49 @@ let players =
             res.send(players)
         }
     });
-    
+    let persons = [
+        {
+          name : "PK",
+          age : 10,
+          votingstatus : false
+        },
+        {
+            name : "Sk",
+            age : 20,
+            votingstatus : false
+        },
+        {
+            name : "AA",
+            age : 70,
+            votingstatus : false
+        },
+        {
+            name : "SC",
+            age : 5,
+            votingstatus : false
+        },
+        {
+            name : "HQ",
+            age : 40,
+            votingstatus : false
+        }
+    ]
+    router.post("/persons", function(req,res){
+     let result = []
+  //  let  flag = false
+     for(let i =0; i < persons.length; i++){
+        let person  = persons[i];
+         if(person.age>=18){
+            person.votingStatus=true
+            result.push(person) 
+        }
+     }
+     if(req.query.age>=18){
+        res.send(result)
+     }
+        else{
+            res.send("they are not eligible for voting")
+        }
+       // return  res.send({ data : result , status : true})
+    })
 module.exports = router;
-// adding this comment for no reason
