@@ -3,12 +3,53 @@ const BookModel= require("../models/bookModel")
 
 const createBook= async function (req, res) {
     let data= req.body
-
-    let savedData= await BookModel.create(data)
-    res.send({msg: savedData})
+    let savedBookData= await BookModel.create(data)
+   res.send({msg: savedBookData})
 }
 
-const getBooksData= async function (req, res) {
+// const getBooksData= async function (req, res) {
+//     const getAllBooksData = await BookModel.find();
+//     res.send({msg:getAllBookData});
+// }
+
+//List of all books
+const bookList= async function ( req,res){
+    let list= await BookModel.find().select({bookName:1,authorName:1,_id:0});
+    res.send({msg: list});
+}
+const getBooksInYear = async function( req, res){
+    years = req.body.year;
+    let getBooksInYear = await BookModel.find({year:req.body.year}).select({bookName:1,_id:0});
+    res.send({msg : getBooksInYear})
+}
+const particularBooks = async function( req, res){
+let specificBooks= await BookModel.find(req.body)
+res.send({msg: particularBooks})
+}
+const getINRBooks = async function( req, res){
+    let list= await BookModel.find({"price.indianPrice":
+    {$in:["100INR","200INR","500INR"]}}).select({bookName:3,_id:0}) 
+    res.send({msg: list})
+}
+const getRandomBooks = async function( req, res){
+    let allBooks= await BookModel.find({$or:[{stockAvailable:false},{totalPages:{$gt:1000}}]}) 
+    res.send({msg: allBooks})
+}
+module.exports.createBook= createBook
+//module.exports.getBooksData= getBooksData
+
+module.exports.bookList= bookList
+module.exports.getBooksInYear= getBooksInYear
+
+module.exports.particularBooks= particularBooks
+module.exports.getINRBooks= getINRBooks
+module.exports.getRandomBooks= getRandomBooks
+
+
+
+
+
+
 
     // let allBooks= await BookModel.find( ).count() // COUNT
 
@@ -65,21 +106,16 @@ const getBooksData= async function (req, res) {
     
     // ASYNC AWAIT
     
-    let a= 2+4
-    a= a + 10
-    console.log(a)
-    let allBooks= await BookModel.find( )  //normally this is an asynchronous call..but await makes it synchronous
+  //  let a= 2+4
+    // a= a + 10
+    //console.log(a)
+    //let allBooks= await BookModel.find( )  //normally this is an asynchronous call..but await makes it synchronous
 
 
     // WHEN AWAIT IS USED: - database + axios
     //  AWAIT can not be used inside forEach , map and many of the array functions..BE CAREFUL
-    console.log(allBooks)
-    let b = 14
-    b= b+ 10
-    console.log(b)
-    res.send({msg: allBooks})
-}
-
-
-module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
+    //console.log(allBooks)
+    //let b = 14
+    //b= b+ 10
+    //console.log(b)
+    //res.send({msg: allBooks})
