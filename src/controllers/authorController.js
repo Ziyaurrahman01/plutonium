@@ -1,4 +1,4 @@
-const AuthorModel= require("../models/authorModel")
+const AuthorModel= require("../models/NewauthorModel")
 
 const createAuthor= async function (req, res) {
     let author = req.body
@@ -11,5 +11,5 @@ const getAuthorsData= async function (req, res) {
     res.send({data: authors})
 }
 
-module.exports.createAuthor= createAuthor
-module.exports.getAuthorsData= getAuthorsData
+module.exports.createAuthor = createAuthor
+module.exports.getAuthorsData = getAuthorsData
