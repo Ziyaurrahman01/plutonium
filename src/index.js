@@ -16,12 +16,15 @@ mongoose.connect("mongodb+srv://ziyaurrahman:google79821@cluster0.xuxdo5g.mongod
 
 app.use (
     function (req, res, next) {
-        console.log ("inside GLOBAL MW");
+     let timeElapsed = Date.now();
+     let today = new Date(timeElapsed);
+     today.toISOString();
+     console.log(today,req.ip,req.path);
         next();
   }
   );
-  
 
+  
 app.use('/', route);
 
 

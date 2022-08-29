@@ -1,8 +1,5 @@
 const UserModel= require("../models/userModel")
 
-
-
-
 const basicCode= async function(req, res) {
     let tokenDataInHeaders= req.headers.token
     console.log(tokenDataInHeaders)
@@ -14,9 +11,9 @@ const basicCode= async function(req, res) {
 
 
 const commonHandler = async function(req, res, next) {
-    console.log('I am inside the common route handler')
-    next()
-    //res.send({status: true, msg: "Hi there!"})
+    console.log('common route handler')
+     next()
+    res.send({status: true, msg: "Hi there!"})
 }
 
 module.exports.commonHandler = commonHandler
