@@ -45,8 +45,7 @@ let createblog = async function (req, res) {
     let blogCreated = await blogModel.create(data);
     res.status(201).send({ status: true, data: blogCreated });
   } catch (err) {
-    res
-      .status(500)
+    res.status(500)
       .send({ status: false, msg: "server Error", err: err.message });
   }
 };
@@ -55,16 +54,12 @@ let createblog = async function (req, res) {
 
 const getBlogByQuery = async function (req, res) {
   try {
-
-    
     let data = req.query
     let {authorId,category,subcategory,tags} = data
-
 
     if(Object.keys(data).length == 0)
   return res.status(400).send({status:false,msg:"Enter the key and value to filter" })
   
-
     let value = await blogModel
       .find({
         isDeleted: false,
@@ -74,7 +69,6 @@ const getBlogByQuery = async function (req, res) {
           { category: category },
           { subcategory: subcategory },
           { tags: tags },
-        
         ],
       })
       .populate("authorId");
@@ -82,7 +76,6 @@ const getBlogByQuery = async function (req, res) {
       if(value.length == 0)
       return res.status(404).send({status:false,msg:"no such blog exist in db"})
 
-     
     res.status(200).send({ status: true, msg: value });
   } catch (err) {
     return res
@@ -103,12 +96,8 @@ const updateBlogById = async (req, res) => {
     if(!blogId)
   return res.send({msg:"enter the blogId"})
     
-      
-
   if(!isValidObjectId(blogId))
     return res.status(400).send({status:false,msg:"enter the valid blogId"})
-
-  
 
     if (!blogId)
       return res.status(404).send({ status: false, msg: "No Blog Found" });
@@ -137,7 +126,6 @@ const updateBlogById = async (req, res) => {
       },
       { new: true }
     );
-
 
     if(result.length == 0)
     return res.status(404).send({status:false,msg:"no such blogId doc exist in db"})
@@ -170,7 +158,6 @@ const deleteById = async function (req, res) {
 if(blog.isDeleted)
 return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 
-
     await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
     return res.status(200).send({ status: true, msg: "Blog deleted successfully" }) 
   } catch (error) {
@@ -179,7 +166,6 @@ return res.status(404).send({staus:false,msg:"this has been deleted Already"})
   }
 }
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
-
 let deleteByQuery = async function (req, res) {
   try {
 
@@ -205,11 +191,8 @@ return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 
 return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
 
-
 }catch (error) {
   return res.status(500).send({ msg: error.message })
 }}
 
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
-
- 
