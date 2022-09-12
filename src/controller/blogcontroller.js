@@ -166,12 +166,6 @@ const deleteById = async function (req, res) {
   }
 }
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
-<<<<<<< HEAD
-let deleteByQuery = async function (req, res) {
-  try {
-=======
-
->>>>>>> 23fc8f8dcf336c2c54a04e9a11ae498dffe8667a
 
 const deleteByQuery = async (req, res) =>{
   try{
@@ -212,18 +206,10 @@ const deleteByQuery = async (req, res) =>{
       {isDeleted: true, isPublished: false, deletedAt: timeStamps},
     );
 
-<<<<<<< HEAD
-return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
-
-}catch (error) {
-  return res.status(500).send({ msg: error.message })
-}}
-=======
     return res.status(200).send({ status: true, msg: `${deletedBlogs.modifiedCount} blogs has been deleted` });
   } catch (err) {
     return res.status(500).send({ status: false, error: err.message });
   }
 };
->>>>>>> 23fc8f8dcf336c2c54a04e9a11ae498dffe8667a
 
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };
