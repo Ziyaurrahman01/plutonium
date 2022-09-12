@@ -155,8 +155,8 @@ const deleteById = async function (req, res) {
     if (!blog) {
       return res.status(404).send({ status: false, msg: "No blogs found / this blog doesn't exist " })
     }
-if(blog.isDeleted)
-return res.status(404).send({staus:false,msg:"this has been deleted Already"})
+    if(blog.isDeleted)
+    return res.status(404).send({staus:false,msg:"this has been deleted Already"})
 
     await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { isDeleted: true, deletedAt: new Date() } })
     return res.status(200).send({ status: true, msg: "Blog deleted successfully" }) 
@@ -166,33 +166,64 @@ return res.status(404).send({staus:false,msg:"this has been deleted Already"})
   }
 }
 //-----------------------⭐Delete-blogsBy-queryParams⭐-----------//
+<<<<<<< HEAD
 let deleteByQuery = async function (req, res) {
   try {
+=======
 
-    let {...data} = req.query
+>>>>>>> 23fc8f8dcf336c2c54a04e9a11ae498dffe8667a
 
+const deleteByQuery = async (req, res) =>{
+  try{
+    let {...data} = req.query; //destructuring the data from the request query
+    let decodedToken = req.decoded;   
+
+    //validating the data for empty values
+    if(Object.keys(data).length == 0) return res.send({ status: false, msg: "Fill the Query" });
+
+    if(data.hasOwnProperty('authorId')){ //checking that the authorId is present or not
+      if(!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "Enter a valid author Id" });
+      if(decodedToken.authorId !== data.authorId) return res.status(403).send({ status: false, msg: "Action Forbidden" })
+      let {...tempData} = data;
+      delete(tempData.authorId); //deleting the authorId from the data
+      let getValues = Object.values(tempData) //getting the values from the data object
+
+      
+    }
+
+    let timeStamps = new Date(); //getting the current timeStamps
     
-if(Object.keys(data).length == 0)
-return res.status(400).send({status:false,msg:"Enter the key and value in query" })
+    let getBlogData = await blogModel.find({ authorId: decodedToken.authorId , data });
 
- let getBlogData = await blogModel.find(data);
-  if (getBlogData.length == 0) {
-  return res.status(404).send({ status: false, msg: "No blog found" });
-}
+    //if any blog document doesn't match with  query data
+    if (getBlogData.length == 0) {
+      return res.status(404).send({ status: false, msg: "No blog found" });
+    }
 
-let blog= await blogModel.find(data)
-if(blog.isDeleted)
-return res.status(404).send({staus:false,msg:"this has been deleted Already"})
+    const getNotDeletedBlog = getBlogData.filter(item => item.isDeleted === false);
 
+    if (getNotDeletedBlog.length == 0) {
+      return res.status(404).send({ status: false, msg: "The Blog is already deleted" });
+    }
+
+    data.authorId = decodedToken.authorId;
     let deletedBlogs = await blogModel.updateMany(
       data, 
-      {isDeleted: true, isPublished: false, deletedAt: new Date(),publishedAt:null},
+      {isDeleted: true, isPublished: false, deletedAt: timeStamps},
     );
 
+<<<<<<< HEAD
 return res.status(404).send({status:true,msg:"blog deleted Sucessfuly"})
 
 }catch (error) {
   return res.status(500).send({ msg: error.message })
 }}
+=======
+    return res.status(200).send({ status: true, msg: `${deletedBlogs.modifiedCount} blogs has been deleted` });
+  } catch (err) {
+    return res.status(500).send({ status: false, error: err.message });
+  }
+};
+>>>>>>> 23fc8f8dcf336c2c54a04e9a11ae498dffe8667a
 
 module.exports = { createblog, getBlogByQuery, updateBlogById,deleteByQuery, deleteById };

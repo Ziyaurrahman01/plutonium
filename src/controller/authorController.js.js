@@ -2,7 +2,7 @@ const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
 const validEmail = require("email-validator");
 
-//-----------------------------------------⭐Create-Author⭐-------------------------------------------------------------------------------
+//-------------------------------⭐Create-Author⭐-------------------------------------------------------------------------------
 
 const createAuthor = async (req, res) => {
   try {
